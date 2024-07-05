@@ -51,3 +51,24 @@ User-Agent를 설정했다.
 Connection connection = Jsoup.connect(" ");
 Document document = connection.get();
 ``` 
+---
+# DB
+회사
+
+| column |  type  | unique |  example  |
+|:------:|:------:|:------:|:---------:|
+|   id   |  Long  |   v    |     1     |
+|  name  | String |        | Coca-Cola |
+| ticker | String |   v    |   COKE    |
+
+배당금
+
+|   column   |     type      | unique |  example   |
+|:----------:|:-------------:|:------:|:----------:|
+|     id     |     Long      |   v    |     3      |
+| company_id |     Long      |        |     1      |
+|    date    | LocalDateTime |        | 2024-07-05 |
+|  dividend  |    String     |        |    2.00    |
+
+> 회사 table의 `ticker`를 통해 구분이 가능한데 배당금 table에서 `company_id`로 다시 구분을 해준이유
+: 비교연산 속도가 문자열간 비교보다 숫자간 비교가 더 빠르기 때문에 이렇게 설계. (인터넷에서..)
