@@ -30,7 +30,7 @@ public class YahooFinanceScrapper implements Scraper {
      * 즉, Heap 영역에 url에 복수개만큼 차지한다는 것이다.
      * 하지만, url을 static으로 선언하면 Static Area 공간에 별도로 url이 저장되고 Heap 영역의 객체(인스턴스)들이 이를 참조하는
      * 방식으로 메모리가 할당(사용)되기 때문에 더 효율적이다.
-     * 하지만, static 변수는 모든 변수들이 접근할 수 있기 때문에 주의하자! => 이를 방지하기 위해 final을 사용함..
+     * 하지만, static 변수는 모든 변수들이 접근할 수 있기 때문에 주의하자! => 이를 방지하기 위해 final을 사용함.
      * */
     @Override
     public ScrapedResult scrap(Company company) {
@@ -54,10 +54,20 @@ public class YahooFinanceScrapper implements Scraper {
             // key, value는 html 문서에서 내가 원하는 데이터가 어떻게 기술되어 있는지 확인 후 기입
             // https://jsoup.org/apidocs/org/jsoup/nodes/Element.html
             Elements parsingDivs // 아래의 조건을 만족하는 데이터가 여러개일 수 있으니 Elements로 받음
-                    = document.getElementsByAttributeValue("class", "table svelte-ewueuo");
-            Element tableElement = parsingDivs.get(0);
+                    = document.getElementsByAttributeValue("data-testid", "history-table");
 
-            Element tbody = tableElement.children().get(1);
+            Element tableElement = parsingDivs.get(0); // 위 조건을 만족하는 데이터 중 첫번째 요소만 가져옴
+            //System.out.println("tableElement = " + tableElement);
+
+            //System.out.println("-----------------------------------------------");
+
+            Element thirdDivTable = tableElement.children().get(2); // 3번째 요소
+
+            Element tbody = thirdDivTable.select("table tbody").first();
+            // .first() : select가 Elements를 반환하기 때문에 데이터타입을 Element로 하려면 특정 요소를 정해줘야 한다.
+
+            //System.out.println("tbody = " + tbody);
+
             List<Dividend> dividends = new ArrayList<>();
 
             for (Element e : tbody.children()) {
@@ -102,9 +112,12 @@ public class YahooFinanceScrapper implements Scraper {
             Document document = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
                     .get();
-            //Element titleElement = document.getElementsByTag("h1").get(0);
-            Element titleElement = document.select("main.layoutContainer.svelte-r172vo h1").first();
-            String title = titleElement.text();
+            Element titleElement = document.getElementsByTag("h1").get(1);
+            //Element titleElement = document.select("main.layoutContainer.svelte-r172vo h1").first();
+
+            System.out.println("titleElement = " + titleElement);
+            String title = titleElement.text().split("\\(")[0];
+            System.out.println("title = " + title);
 
             return Company.builder()
                     .ticker(ticker)

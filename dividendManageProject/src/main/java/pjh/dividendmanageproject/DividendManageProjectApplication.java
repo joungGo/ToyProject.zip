@@ -20,7 +20,7 @@ public class DividendManageProjectApplication {
 
         YahooFinanceScrapper scraper = new YahooFinanceScrapper();
         //var result = scraper.scrap(Company.builder().ticker("O").build());
-        var result = scraper.scrapCompanyByTicker("MMM");
+        var result = scraper.scrapCompanyByTicker("O");
         System.out.println(result);
 
     }
