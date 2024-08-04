@@ -14,7 +14,7 @@ public class ScrapedResult {
     private Company company;
 
     // 배당금 리스트 인스턴스를 멤버변수로 가짐
-    private List<Dividend> dividendsEntities;
+    private List<Dividend> dividends;
 
-    public ScrapedResult() {this.dividendsEntities = new ArrayList<>(); }
+    public ScrapedResult() {this.dividends = new ArrayList<>(); }
 }

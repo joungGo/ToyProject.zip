@@ -4,6 +4,7 @@ package pjh.dividendmanageproject.persist.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import pjh.dividendmanageproject.model.Company;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,5 +25,11 @@ public class CompanyEntity {
     private String ticker;
 
     private String name;
+
+    // DB의 ticker, name에 스크랩한 데이터가 담겨있는 Company의 ticker, name을 저장한다.
+    public CompanyEntity(Company company) { // => 생성자
+        this.ticker = company.getTicker();
+        this.name = company.getName();
+    }
 
 }
