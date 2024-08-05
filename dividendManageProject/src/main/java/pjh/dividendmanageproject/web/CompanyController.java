@@ -1,11 +1,21 @@
 package pjh.dividendmanageproject.web;
 
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import pjh.dividendmanageproject.model.Company;
+import pjh.dividendmanageproject.persist.entity.CompanyEntity;
+import pjh.dividendmanageproject.service.CompanyService;
 
 @RestController
 @RequestMapping("/company") // 하위의 경로에서 공통되는 경로를 빼는 작업
+@AllArgsConstructor
 public class CompanyController {
+
+    private final CompanyService companyService;
 
     // 배당금 검색 - 자동완성
     //@GetMapping("/company/autocomplete")
@@ -17,14 +27,22 @@ public class CompanyController {
     // 회사 리스트 조회
     //@GetMapping("company")
     @GetMapping
-    public ResponseEntity<?> searchCompany() {
-        return null;
+    public ResponseEntity<?> searchCompany(final Pageable pageable) { // pageable 값이 변하는 것을 방지하기 위해 final 사용
+        Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
+        return ResponseEntity.ok(companies);
     }
 
     // 배당금 데이터 저장
     @PostMapping
-    public ResponseEntity<?> addCompany() {
-        return null;
+    public ResponseEntity<?> addCompany(@RequestBody Company request) {
+        String ticker = request.getTicker().trim();
+        if (ObjectUtils.isEmpty(ticker)) {
+            throw new RuntimeException("ticker is empty");
+        }
+
+        Company company = this.companyService.save(ticker);
+
+        return ResponseEntity.ok(company);
     }
 
     // 회사 삭제

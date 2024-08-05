@@ -119,7 +119,7 @@ public class YahooFinanceScrapper implements Scraper {
             //Element titleElement = document.select("main.layoutContainer.svelte-r172vo h1").first();
 
             System.out.println("titleElement = " + titleElement);
-            String title = titleElement.text().split("\\(")[0];
+            String title = titleElement.text().split("\\(")[0].trim();
             System.out.println("title = " + title);
 
             return Company.builder()
