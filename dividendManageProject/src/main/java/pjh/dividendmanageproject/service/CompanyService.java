@@ -1,7 +1,9 @@
 package pjh.dividendmanageproject.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -16,9 +18,11 @@ import pjh.dividendmanageproject.scraper.Scraper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service // 싱글톤
 @AllArgsConstructor
 public class CompanyService {
+
+    private final Trie trie; // 이 trie는 프로젝트 내에서 하나로만 사용(유지)되어야 하므로 별도의 빈으로 생성하여 사용한다. = 싱글톤
 
     // Scrap
     private final Scraper yahooFinanceScraper;
@@ -68,5 +72,33 @@ public class CompanyService {
         return company;
     }
 
+    // DB에서 조건에 맞는 데이터 가져오기 기능
+    public List<String> getCompanyNamesByKeyword(String keyword) {
+        Pageable limit = PageRequest.of(0, 10);
+        Page<CompanyEntity> companyEntities = this.companyRepository.findByNameStartingWithIgnoreCase(keyword, limit);
+        return companyEntities.stream()
+                .map(e -> e.getName()) // e = companyEntities
+                .collect(Collectors.toList());
+    }
 
+    // 자동완성 - trie에 회사명 저장하기
+    public void addAutocompleteKeyword(String keyword) {
+        this.trie.put(keyword, null);
+        /*
+        * trie는 keyword에 집중되는 구조이다. 그래서 value를 null로 처리해도 상관없다.
+        * value의 경우 각 keyword의 검색 빈도수를 체크하는 기능을 만든다고 할 때 추가적으로 구현하면 된다.*/
+    }
+
+    // 자동완성 - trie에서 회사명 조회하기
+    public List<String> autocomplete(String keyword) {
+        return (List<String>) this.trie.prefixMap(keyword).keySet()
+                .stream()
+                //.limit(10) 가져올 개수에 제한을 두는 것.
+                .collect(Collectors.toList());
+    }
+
+    // 자동완성 - trie에 저장된 데이터 삭제하기
+    public void deleteAutocompleteKeyword(String keyword) {
+        this.trie.remove(keyword);
+    }
 }
