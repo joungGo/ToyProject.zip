@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import pjh.dividendmanageproject.model.Company;
 import pjh.dividendmanageproject.model.Dividend;
 import pjh.dividendmanageproject.model.ScrapedResult;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class YahooFinanceScrapper implements Scraper {
 
     // finance url
@@ -32,6 +34,7 @@ public class YahooFinanceScrapper implements Scraper {
      * 방식으로 메모리가 할당(사용)되기 때문에 더 효율적이다.
      * 하지만, static 변수는 모든 변수들이 접근할 수 있기 때문에 주의하자! => 이를 방지하기 위해 final을 사용함.
      * */
+
     @Override
     public ScrapedResult scrap(Company company) {
 
@@ -93,7 +96,7 @@ public class YahooFinanceScrapper implements Scraper {
                         .build());
 
             }
-            scrapResult.setDividendsEntities(dividends);
+            scrapResult.setDividends(dividends);
 
         } catch (IOException e) {
             // TODO : 스크래핑 과정 중 에러 발생시 출력할 코드 구현 하기
@@ -116,7 +119,7 @@ public class YahooFinanceScrapper implements Scraper {
             //Element titleElement = document.select("main.layoutContainer.svelte-r172vo h1").first();
 
             System.out.println("titleElement = " + titleElement);
-            String title = titleElement.text().split("\\(")[0];
+            String title = titleElement.text().split("\\(")[0].trim();
             System.out.println("title = " + title);
 
             return Company.builder()
