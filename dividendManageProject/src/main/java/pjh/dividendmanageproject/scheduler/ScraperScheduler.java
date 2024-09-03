@@ -12,6 +12,7 @@ import pjh.dividendmanageproject.persist.repository.CompanyRepository;
 import pjh.dividendmanageproject.persist.repository.DividendRepository;
 import pjh.dividendmanageproject.scraper.Scraper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j // 스케줄러가 실행될 때마다 실행되고 있음을 알려주기 위해 Logging을 사용하기 위한 어노테이션
@@ -25,7 +26,21 @@ public class ScraperScheduler {
 
     // 자동화 - 스크랩 한 홈페이지의 정보가 업데이트 되었을 경우, 개발자가 수동으로 추가하는 것 보다 이를 자동으로 추가되게 하기 위함
     // 일정 주기마다 실행 = 자동화
-    @Scheduled(cron = "${scheduler.scrap.yahoo}")
+    //@Scheduled(cron = "${scheduler.scrap.yahoo}") // 스케쥴링 기능이 1개일 경우 이렇게 어노테이션을 붙여서 사용
+
+    // 만약, 스케쥴링 기능이 2개 이상이라면..? => 스레드풀 개념 사용!
+
+    @Scheduled(fixedDelay = 1000)
+    public void test1() throws InterruptedException {
+        Thread.sleep(10000);
+        System.out.println(Thread.currentThread().getName() + " -> 테스트1 " + LocalDateTime.now());
+    }
+
+    @Scheduled(fixedDelay = 1000)
+    public void test2() throws InterruptedException {
+        System.out.println(Thread.currentThread().getName() + " -> 테스트2 " + LocalDateTime.now());
+    }
+
     public void yahooFinanceScheduling() {
         log.info("scraping scheduler is started");
         // 저장된 회사 목록을 조회
@@ -48,7 +63,7 @@ public class ScraperScheduler {
             scrapedResult.getDividends().stream() // 아래의 e는 getDividends()를 의미
                     .map(e -> new DividendEntity(company.getId(), e))// e가 Dividend 타입인데 현재, DB에 저장해야 하는 상황이니까 DividendEntity 타입으로 변환해주는 과정
                     .forEach(e -> { // e는 위에서 map을 통해 변환된 각각의 DividendEntity를 의미
-                        boolean exist = this.dividendRepository.existByCompanyIdAndDate(e.getCompanyId(), e.getDate());
+                        boolean exist = this.dividendRepository.existsByCompanyIdAndDate(e.getCompanyId(), e.getDate());
                         if (!exist) {
                             this.dividendRepository.save(e);
                         }
