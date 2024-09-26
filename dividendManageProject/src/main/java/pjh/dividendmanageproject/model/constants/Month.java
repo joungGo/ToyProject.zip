@@ -24,7 +24,7 @@ public enum Month {
     }
 
     public static int strToNumber(String s) {
-        for (var m : Month.values()) {
+        for (var m : Month.values()) { // Month.values()은 JAN, FEB, MAR 등을 배열로 선언함
             if (m.s.equals(s)) {
                 return m.number;
             }

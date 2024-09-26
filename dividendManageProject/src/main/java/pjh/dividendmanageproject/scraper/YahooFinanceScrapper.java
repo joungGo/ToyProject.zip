@@ -90,10 +90,12 @@ public class YahooFinanceScrapper implements Scraper {
                     throw new RuntimeException("Unexpected Month enum value -> " + splits[0]);
                 }
 
-                dividends.add(Dividend.builder()
+                dividends.add(new Dividend(LocalDateTime.of(year, month, day, 1, 0), dividend));
+                        // Dividend : Builder 어노테이션을 사용했을 경우
+                        /*Dividend.builder()
                         .date(LocalDateTime.of(year, month, day, 1, 0))
                         .dividend(dividend)
-                        .build());
+                        .build());*/
 
             }
             scrapResult.setDividends(dividends);
@@ -122,10 +124,12 @@ public class YahooFinanceScrapper implements Scraper {
             String title = titleElement.text().split("\\(")[0].trim();
             System.out.println("title = " + title);
 
-            return Company.builder()
+            return new Company(ticker, title);
+            // Dividend : Builder 어노테이션을 사용했을 경우
+            /*return Company.builder()
                     .ticker(ticker)
                     .name(title)
-                    .build();
+                    .build();*/
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -2,10 +2,12 @@ package pjh.dividendmanageproject.scheduler;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pjh.dividendmanageproject.model.Company;
 import pjh.dividendmanageproject.model.ScrapedResult;
+import pjh.dividendmanageproject.model.constants.CacheKey;
 import pjh.dividendmanageproject.persist.entity.CompanyEntity;
 import pjh.dividendmanageproject.persist.entity.DividendEntity;
 import pjh.dividendmanageproject.persist.repository.CompanyRepository;
@@ -21,16 +23,15 @@ import java.util.List;
 public class ScraperScheduler {
 
     private final CompanyRepository companyRepository;
-    private final Scraper yahooFinanceScraper;
     private final DividendRepository dividendRepository;
+    private final Scraper yahooFinanceScraper;
 
     // 자동화 - 스크랩 한 홈페이지의 정보가 업데이트 되었을 경우, 개발자가 수동으로 추가하는 것 보다 이를 자동으로 추가되게 하기 위함
     // 일정 주기마다 실행 = 자동화
-    //@Scheduled(cron = "${scheduler.scrap.yahoo}") // 스케쥴링 기능이 1개일 경우 이렇게 어노테이션을 붙여서 사용
+    @Scheduled(cron = "${scheduler.scrap.yahoo}") // 스케쥴링 기능이 1개일 경우 이렇게 어노테이션을 붙여서 사용
 
     // 만약, 스케쥴링 기능이 2개 이상이라면..? => 스레드풀 개념 사용!
-
-    @Scheduled(fixedDelay = 1000)
+    /*@Scheduled(fixedDelay = 1000)
     public void test1() throws InterruptedException {
         Thread.sleep(10000);
         System.out.println(Thread.currentThread().getName() + " -> 테스트1 " + LocalDateTime.now());
@@ -39,8 +40,10 @@ public class ScraperScheduler {
     @Scheduled(fixedDelay = 1000)
     public void test2() throws InterruptedException {
         System.out.println(Thread.currentThread().getName() + " -> 테스트2 " + LocalDateTime.now());
-    }
+    }*/
 
+    // 위의 스케줄러가 동작할 때마다 @CacheEvict도 같이 동작함 = 회사 배당금을 조회하는 시점에 캐시의 데이터가 업데이트 된다는 의미
+    @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     public void yahooFinanceScheduling() {
         log.info("scraping scheduler is started");
         // 저장된 회사 목록을 조회
@@ -49,14 +52,17 @@ public class ScraperScheduler {
         // 회사마다 배당금 정보를 새로 스크래핑 => 중복된 배당금 정보 저장 방지 => DividendEntity에 Unique 속성 선언
         for (var company : companies) {
             log.info("scraping scheduler is started -> " + company.getName());
-            ScrapedResult scrapedResult = this.yahooFinanceScraper.scrap(Company.builder()
+            ScrapedResult scrapedResult = this.yahooFinanceScraper.scrap(
+                    new Company(company.getTicker(), company.getName()));
+            // Dividend : Builder 어노테이션을 사용했을 경우
+                                                    /*Company.builder()
                                                     .name(company.getName())
-                    /* 현재, companies의 회사명들은 CompanyEntity 타입이다.
-                    *  하지만, scrap 메소드의 매개변수 타입은 Company를 요구하므로
-                    *  builder를 사용해 데이터 타입을 변경해 맞춰줘야 한다.
-                    * */
                                                     .ticker(company.getTicker())
-                                                    .build());
+                                                    .build());*/
+            /* 현재, companies의 회사명들은 CompanyEntity 타입이다.
+             *  하지만, scrap 메소드의 매개변수 타입은 Company를 요구하므로
+             *  builder를 사용해 데이터 타입을 변경해 맞춰줘야 한다.
+             * */
 
             // 스크래핑한 배당금 정보 중 DB에 없는 값은 저장
             // this.dividendRepository.saveAll() : DividendEnity에 Unique 속성이 있어 중복된 값이 저장될 경우 saveAll은 모든 데이터를 처리하지 않게 된다.
@@ -74,7 +80,7 @@ public class ScraperScheduler {
                 Thread.sleep(3000); // 실행중인 스레드를 잠시 멈추게 할 때 사용 // 3 seconds
             } catch (InterruptedException e) {
                 // throw new RuntimeException(e); // : 예외를 명시적으로 처리하지 않은 코드에서도 해당 예외에 대한 반응을 강제할 수 있다.
-                                                  // 프로그램 흐름을 중단시키거나 상위에서 예외를 처리하기 위해 주로 사용
+                // 프로그램 흐름을 중단시키거나 상위에서 예외를 처리하기 위해 주로 사용
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
                 /*
