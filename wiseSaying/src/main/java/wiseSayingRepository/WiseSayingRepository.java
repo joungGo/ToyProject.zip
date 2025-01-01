@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WiseSayingRepository {
-    private static final String DB = "src/미니과제/db/";
+    private static final String DB = "src/main/java/db/";
     private static final String LAST_ID_FILE = DB + "lastId.txt";
     private static final String DATA_PROVERB_FILE = DB + "data.json";
 

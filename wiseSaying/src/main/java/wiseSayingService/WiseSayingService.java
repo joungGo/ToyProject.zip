@@ -76,12 +76,10 @@ public class WiseSayingService {
     }
 
     public void updateProverb(int id, Scanner scanner) {
-        for (Proverb proverb : proverbList) {
-            if (proverb.getId() != id) {
-                System.out.println(id + "번 명언은 존재하지 않습니다.");
-                return;
+        boolean found = false;
 
-            } else {
+        for (Proverb proverb : proverbList) {
+            if (proverb.getId() == id) {
                 System.out.println("명언(기존) : " + proverb.getProverb());
                 System.out.print("명언: ");
                 String newProverb = scanner.nextLine();
@@ -95,12 +93,18 @@ public class WiseSayingService {
                 repository.saveProverb(proverb);
 
                 System.out.println("== 수정된 결과 ==");
-                System.out.println("명언:" + proverb.getProverb() + "작가: " + proverb.getAuthor());
+                System.out.println("명언: " + proverb.getProverb() + " / 작가: " + proverb.getAuthor());
 
-                return;
+                found = true;
+                break; // 조건에 맞는 항목을 찾으면 반복문 종료
             }
         }
+
+        if (!found) {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+        }
     }
+
 
     public void deleteProverb(int id) {
         for (int i = 0; i < proverbList.size(); i++) {
