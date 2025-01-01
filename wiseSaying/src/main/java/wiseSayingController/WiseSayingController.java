@@ -5,62 +5,39 @@ import wiseSayingService.WiseSayingService;
 import java.util.Scanner;
 
 public class WiseSayingController {
-    private final Scanner scanner;
     private final WiseSayingService service;
+    private final Scanner scanner;
 
     public WiseSayingController() {
-        this.scanner = new Scanner(System.in);
         this.service = new WiseSayingService();
+        this.scanner = new Scanner(System.in);
     }
-
-
     public void start() {
-
-        System.out.println("== 명언 앱 ==");
+        System.out.println("== 명언 ==");
 
         while (true) {
             System.out.print("명령) ");
             String command = scanner.nextLine();
 
-            if (command.trim().equals("등록")) {
+            if (command.equals("등록")) {
                 registerProverb();
-            } else if (command.trim().equals("목록")) {
+            } else if (command.equals("목록")) {
                 listProverb();
-            } else if (command.trim().startsWith("검색")) {
+            } else if (command.startsWith("검색")) {
                 searchProverb(command);
-            } else if (command.trim().startsWith("수정?id=")) {
-                updateProverb(command);
-            } else if (command.trim().startsWith("삭제?id=")) {
+            } else if (command.startsWith("삭제?id=")) {
                 deleteProverb(command);
-            } else if (command.trim().equals("빌드")) {
-                buildDataProverb();
-            } else if (command.trim().equals("종료")) {
+            } else if (command.startsWith("수정?id=")) {
+                updateProverb(command);
+            } else if (command.equals("빌드")) {
+                buildDataFile(); // 빌드 명령 처리
+            } else if (command.equals("종료")) {
                 System.out.println("프로그램이 종료되었습니다.");
                 break;
             } else {
-                System.out.println("잘못된 명령어 입니다.");
+                System.out.println("잘못된 명령어입니다.");
             }
         }
-    }
-
-    private void registerProverb() {
-        System.out.print("명언: ");
-        String proverb = scanner.nextLine();
-
-        System.out.print("작가:");
-        String author = scanner.nextLine();
-
-        if (proverb.trim().isEmpty() || author.trim().isEmpty()) {
-            System.out.println("명언과 작가는 반드리 입력해야 합니다.");
-        }
-
-        service.addProverb(proverb, author);
-    }
-
-    private void listProverb() {
-        System.out.print("페이지 번호 입력: ");
-        int page = Integer.parseInt(scanner.nextLine());
-        service.listProverbs(page);
     }
 
     private void searchProverb(String command) {
@@ -80,12 +57,27 @@ public class WiseSayingController {
         String keywordType = keywords[0].split("=")[1];
         String keyword = keywords[1].split("=")[1];
         service.searchProverb(keywordType, keyword);
-
     }
 
-    private void deleteProverb(String command) {
-        int id = Integer.parseInt(command.split("=")[1]);
-        service.deleteProverb(id);
+    private void registerProverb() {
+        System.out.print("명언 : ");
+        String proverb = scanner.nextLine();
+
+        System.out.print("작가 : ");
+        String author = scanner.nextLine();
+
+        if (proverb.trim().isEmpty() || author.trim().isEmpty()) {
+            System.out.println("명언과 작가는 반드시 입력해야 합니다.");
+            return;
+        }
+
+        service.addProverb(proverb, author);
+    }
+
+    private void listProverb() {
+        System.out.print("페이지 번호 입력: ");
+        int page = Integer.parseInt(scanner.nextLine());
+        service.listProverbs(page);
     }
 
     private void updateProverb(String command) {
@@ -93,9 +85,13 @@ public class WiseSayingController {
         service.updateProverb(id, scanner);
     }
 
-    private void buildDataProverb() {
+    private void deleteProverb(String command) {
+        int id = Integer.parseInt(command.split("=")[1]);
+        service.deleteProverb(id);
+    }
+
+    private void buildDataFile() {
         service.saveProverbToData();
         System.out.println("data.json 파일이 생성되었습니다.");
     }
-
 }

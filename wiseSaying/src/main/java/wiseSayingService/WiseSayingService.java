@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class WiseSayingService {
-
     private final WiseSayingRepository repository;
     private final List<Proverb> proverbList;
 
@@ -57,9 +56,9 @@ public class WiseSayingService {
         List<Proverb> results = new ArrayList<>();
 
         for (Proverb proverb : proverbList) {
-            if (keywordType.equals("proverb") && proverb.getProverb().contains(keyword)) {
+            if (keywordType.equals("proverb") && keyword.equals(proverb.getProverb())) {
                 results.add(proverb);
-            } else if (keywordType.equals("author") && proverb.getAuthor().contains(keyword)) {
+            } else if (keywordType.equals("author") && keyword.equals(proverb.getAuthor())) {
                 results.add(proverb);
             }
         }
@@ -76,41 +75,41 @@ public class WiseSayingService {
         }
     }
 
-    public void deleteProverb(int id) {
-        boolean check = false;
-
-        for (int i = 0; i < proverbList.size(); i++) {
-            if (proverbList.get(i).getId() == id) {
-                proverbList.remove(i);
-                repository.deleteProverbFile(id);
-                System.out.println(id + "번 명언이 삭제되었습니다.");
-                check = true;
-                break;
-            }
-        }
-
-        if (!check || id <= 0) {
-            System.out.println(id + "번 명언은 존재하지 않습니다.");
-        }
-    }
-
     public void updateProverb(int id, Scanner scanner) {
         for (Proverb proverb : proverbList) {
-            if (proverb.getId() == id) {
+            if (proverb.getId() != id) {
+                System.out.println(id + "번 명언은 존재하지 않습니다.");
+                return;
+
+            } else {
                 System.out.println("명언(기존) : " + proverb.getProverb());
-                System.out.print("명언 : ");
+                System.out.print("명언: ");
                 String newProverb = scanner.nextLine();
                 proverb.setProverb(newProverb);
 
                 System.out.println("작가(기존) : " + proverb.getAuthor());
-                System.out.print("작가 : ");
+                System.out.print("작가: ");
                 String newAuthor = scanner.nextLine();
                 proverb.setAuthor(newAuthor);
 
                 repository.saveProverb(proverb);
+
+                System.out.println("== 수정된 결과 ==");
+                System.out.println("명언:" + proverb.getProverb() + "작가: " + proverb.getAuthor());
+
                 return;
+            }
+        }
+    }
+
+    public void deleteProverb(int id) {
+        for (int i = 0; i < proverbList.size(); i++) {
+            if (proverbList.get(i).getId() != id) {
+                System.out.println(id + "번 명언이 없습니다.");
             } else {
-                System.out.println("해당 id의 명언이 db에 없습니다.");
+                proverbList.remove(i);
+                repository.deleteProverbFile(id);
+                System.out.println(id+"번 명언이 삭제되었습니다.");
                 return;
             }
         }
