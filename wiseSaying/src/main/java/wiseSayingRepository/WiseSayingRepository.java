@@ -77,15 +77,4 @@ public class WiseSayingRepository {
         }
         return proverbs;
     }
-
-    public void updateProverbInFile(Proverb proverbObject) {
-        Gson gson = new Gson();
-        String json = gson.toJson(proverbObject);
-
-        try (FileWriter fw = new FileWriter(DB + proverbObject.getId() + ".json")) {
-            fw.write(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

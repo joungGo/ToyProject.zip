@@ -36,8 +36,8 @@ public class WiseSayingService {
         int id = repository.readLastId();
         Proverb proverbObject = new Proverb(id, proverb, author);
         proverbList.add(proverbObject);
-        repository.saveLastId(id + 1);
         repository.saveProverb(proverbObject);
+        repository.saveLastId(id + 1);
         System.out.println(id + "번 명언이 등록되었습니다.");
     }
 
@@ -107,13 +107,10 @@ public class WiseSayingService {
                 proverb.setAuthor(newAuthor);
 
                 // repository 수정
-                repository.updateProverbInFile(proverb);
-                return;
-            } else {
-                System.out.println("찾으시는 id의 명언이 없습니다.");
+                repository.saveProverb(proverb);
                 return;
             }
         }
-
+        System.out.println("찾으시는 id의 명언이 없습니다.");
     }
 }
