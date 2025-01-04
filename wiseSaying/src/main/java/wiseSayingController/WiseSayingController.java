@@ -83,6 +83,5 @@ public class WiseSayingController {
     private void updateProverb(String command) {
         int id = Integer.parseInt(command.split("=")[1]);
         service.updateProverb(id, sc);
-
     }
 }

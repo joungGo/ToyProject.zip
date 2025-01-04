@@ -109,8 +109,14 @@ public class WiseSayingService {
                 // repository 수정
                 repository.saveProverb(proverb);
                 return;
-            }
+            } /*
+            첫번재 proverb 객체에서 해당 id를 찾지 못하면 바로 실행되므로 틀린 코드 위치
+            else {
+                System.out.println("찾으시는 id의 명언이 없습니다.");
+                return;
+            }*/
         }
         System.out.println("찾으시는 id의 명언이 없습니다.");
+        return;
     }
 }
