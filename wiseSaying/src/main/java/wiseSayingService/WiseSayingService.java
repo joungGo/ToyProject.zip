@@ -113,4 +113,33 @@ public class WiseSayingService {
         }
         System.out.println("찾으시는 id의 명언이 없습니다.");
     }
+
+    public void deleteProverb(int id) {
+        boolean check = false;
+
+        /*for (Proverb proverb : proverbList) {
+            if (proverb.getId() == id) {
+                proverbList.remove(proverb);
+                repository.deleteProverbFile(id);
+                System.out.println(id + "번 명언이 삭제되었습니다.");
+                check = true;
+                break;
+            }
+        }*/
+
+        for (int i = 0; i < proverbList.size(); i++) {
+            if (proverbList.get(i).getId() == id) {
+                proverbList.remove(i);
+                repository.deleteProverbFile(id);
+                System.out.println(id + "번 명언이 삭제되었습니다.");
+                check = true;
+                break;
+            }
+        }
+
+
+        if (!check || id <= 0) {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+        }
+    }
 }

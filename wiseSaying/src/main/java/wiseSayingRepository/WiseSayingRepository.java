@@ -1,6 +1,7 @@
 package wiseSayingRepository;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import data.Proverb;
 
 import java.io.*;
@@ -70,11 +71,29 @@ public class WiseSayingRepository {
             Gson gson = new Gson();
 
             for (File file : files) {
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                Proverb proverb = gson.fromJson(br, Proverb.class);
-                proverbs.add(proverb);
+                try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                    Proverb proverb = gson.fromJson(br, Proverb.class);
+                    proverbs.add(proverb);
+                } catch (JsonSyntaxException e) {
+                    System.out.println("JSON 파싱 오류가 발생했습니다: " + file.getName());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return proverbs;
+    }
+
+    public void deleteProverbFile(int id) {
+        File file = new File(DB + id + ".json");
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println(id + ".json 파일이 성공적으로 삭제되었습니다.");
+            } else {
+                System.out.println(id + ".json 파일 삭제에 실패하였습니다.");
+            }
+        } else {
+            System.out.println(id + ".json 파일이 존재하지 않습니다.");
+        }
     }
 }
