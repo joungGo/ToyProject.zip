@@ -5,17 +5,19 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import data.Proverb;
 import util.ExceptionHandler;
+import wiseSayingController.LastIdRepositoryInterface;
 import wiseSayingController.WiseSayingRepositoryInterface;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WiseSayingRepository implements WiseSayingRepositoryInterface {
+public class WiseSayingRepository implements WiseSayingRepositoryInterface, LastIdRepositoryInterface {
     private static final String DB = "src/main/java/db/";
     private static final String LAST_ID_FILE = DB + "lastId.txt";
     private static final String DATA_PROVERB_FILE = DB + "data.json";
 
+    @Override
     public int readLastId() {
         File file = new File(LAST_ID_FILE);
         if (!file.exists()) {
@@ -40,6 +42,7 @@ public class WiseSayingRepository implements WiseSayingRepositoryInterface {
         return 1;
     }
 
+    @Override
     public void saveLastId(int id) {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(LAST_ID_FILE));
@@ -50,6 +53,7 @@ public class WiseSayingRepository implements WiseSayingRepositoryInterface {
         }
     }
 
+    @Override
     public void saveProverb(Proverb proverbObject) {
         Gson gson = new Gson();
         String json = gson.toJson(proverbObject);
@@ -62,7 +66,7 @@ public class WiseSayingRepository implements WiseSayingRepositoryInterface {
 
 
     }
-
+    @Override
     public List<Proverb> loadProverbs() {
         File folder = new File(DB);
         List<Proverb> proverbs = new ArrayList<>();
@@ -85,6 +89,7 @@ public class WiseSayingRepository implements WiseSayingRepositoryInterface {
         return proverbs;
     }
 
+    @Override
     public void deleteProverbFile(int id) {
         File file = new File(DB + id + ".json");
         if (file.exists()) {
@@ -98,6 +103,7 @@ public class WiseSayingRepository implements WiseSayingRepositoryInterface {
         }
     }
 
+    @Override
     public void saveDataToFile(List<Proverb> proverbList) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         // String json = gson.toJson(proverbList);

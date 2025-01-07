@@ -1,5 +1,6 @@
 package wiseSayingController;
 
+import wiseSayingRepository.WiseSayingRepository;
 import wiseSayingService.WiseSayingService;
 
 import java.util.Scanner;
@@ -9,7 +10,8 @@ public class WiseSayingController {
     private final Scanner sc;
 
     public WiseSayingController() {
-        this.service = new WiseSayingService();
+        WiseSayingRepository repository = new WiseSayingRepository();
+        this.service = new WiseSayingService(repository, repository);
         this.sc = new Scanner(System.in);
     }
 

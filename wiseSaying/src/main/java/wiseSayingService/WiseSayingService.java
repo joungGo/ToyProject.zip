@@ -1,6 +1,7 @@
 package wiseSayingService;
 
 import data.Proverb;
+import wiseSayingController.LastIdRepositoryInterface;
 import wiseSayingController.WiseSayingRepositoryInterface;
 import wiseSayingRepository.WiseSayingRepository;
 
@@ -10,17 +11,20 @@ import java.util.Scanner;
 
 public class WiseSayingService {
     private final WiseSayingRepositoryInterface repository;
+    private final LastIdRepositoryInterface lastIdRepository;
     private final List<Proverb> proverbList; // 데이터 영속성
     private static final int LIST_PER_PAGE = 5;
 
-    public WiseSayingService() {
-        this.repository = new WiseSayingRepository();
+    public WiseSayingService(WiseSayingRepositoryInterface repository, LastIdRepositoryInterface lastIdRepository) {
+        this.repository = repository;
+        this.lastIdRepository = lastIdRepository;
         this.proverbList = repository.loadProverbs(); // 데이터 영속성
     }
 
     // 테스트용 생성자 (Mock 주입 지원)
-    public WiseSayingService(WiseSayingRepository repository, List<Proverb> proverbList) {
+    public WiseSayingService(WiseSayingRepository repository, LastIdRepositoryInterface lastIdRepository, List<Proverb> proverbList) {
         this.repository = repository;
+        this.lastIdRepository = lastIdRepository;
         this.proverbList = proverbList;
     }
 
@@ -29,11 +33,11 @@ public class WiseSayingService {
     }
 
     public void registerProverb(String proverb, String author) {
-        int id = repository.readLastId();
+        int id = lastIdRepository.readLastId();
         Proverb proverbObject = new Proverb(id, proverb, author);
         proverbList.add(proverbObject);
         repository.saveProverb(proverbObject);
-        repository.saveLastId(id + 1);
+        lastIdRepository.saveLastId(id + 1);
         System.out.println(id + "번 명언이 등록되었습니다.");
     }
 
