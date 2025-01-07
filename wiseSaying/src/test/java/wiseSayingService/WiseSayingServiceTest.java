@@ -1,46 +1,49 @@
 package wiseSayingService;
 
-import data.Proverb;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import wiseSayingRepository.WiseSayingRepository;
+import data.Proverb;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class WiseSayingServiceTest {
-
+public class WiseSayingServiceTest {
     private WiseSayingService service;
-    private WiseSayingRepository mockRepository;
+    private WiseSayingRepository repository;
+    private List<Proverb> proverbList;
 
     @BeforeEach
-    void setUp() {
-        mockRepository = mock(WiseSayingRepository.class);
-        service = new WiseSayingService(mockRepository, new ArrayList<>());
+    public void setUp() {
+        repository = Mockito.mock(WiseSayingRepository.class);
+        proverbList = new ArrayList<>();
+        service = new WiseSayingService(repository, proverbList);
     }
 
     @Test
-    void registerProverb_shouldAddProverbToListAndSave() {
-        // given
-        String proverbText = "행동은 말보다 더 크게 말한다.";
-        String author = "속담";
-        int mockId = 1;
+    public void testRegisterProverb() {
+        // Given
+        String proverb = "Actions speak louder than words.";
+        String author = "Unknown";
+        int lastId = 1;
 
-        when(mockRepository.readLastId()).thenReturn(mockId);
+        when(repository.readLastId()).thenReturn(lastId);
 
-        // when
-        service.registerProverb(proverbText, author);
+        // When
+        service.registerProverb(proverb, author);
 
-        // then
-        verify(mockRepository, times(1)).saveLastId(mockId);
-        verify(mockRepository, times(1)).saveProverb(any(Proverb.class));
+        // Then
+        assertEquals(1, proverbList.size());
+        Proverb registeredProverb = proverbList.get(0);
+        assertEquals(lastId, registeredProverb.getId());
+        assertEquals(proverb, registeredProverb.getProverb());
+        assertEquals(author, registeredProverb.getAuthor());
 
-        List<Proverb> proverbs = service.getProverbList();
-        assertEquals(1, proverbs.size());
-        assertEquals(proverbText, proverbs.get(0).getProverb());
-        assertEquals(author, proverbs.get(0).getAuthor());
+        verify(repository, times(1)).saveProverb(registeredProverb);
+        verify(repository, times(1)).saveLastId(lastId + 1);
     }
 }
