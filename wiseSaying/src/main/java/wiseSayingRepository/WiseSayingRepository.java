@@ -1,10 +1,12 @@
 package wiseSayingRepository;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import data.Proverb;
 
 import java.io.*;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +96,17 @@ public class WiseSayingRepository {
             }
         } else {
             System.out.println(id + ".json 파일이 존재하지 않습니다.");
+        }
+    }
+
+    public void saveDataToFile(List<Proverb> proverbList) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        // String json = gson.toJson(proverbList);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DATA_PROVERB_FILE))) {
+            gson.toJson(proverbList, bw);
+            System.out.println("빌드 성공");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

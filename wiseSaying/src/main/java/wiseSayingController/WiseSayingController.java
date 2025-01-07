@@ -32,7 +32,7 @@ public class WiseSayingController {
             } else if (command.trim().startsWith("삭제?id=")) {
                 deleteProverb(command);
             } else if (command.trim().equals("빌드")) {
-                //buildDataProverb();
+                buildDataProverb();
             } else if (command.trim().equals("종료")) {
                 System.out.println("프로그램이 종료되었습니다.");
                 break;
@@ -88,5 +88,9 @@ public class WiseSayingController {
     private void deleteProverb(String command) {
         int id = Integer.parseInt(command.split("=")[1]);
         service.deleteProverb(id);
+    }
+
+    private void buildDataProverb() {
+        service.buildDataToFile();
     }
 }
