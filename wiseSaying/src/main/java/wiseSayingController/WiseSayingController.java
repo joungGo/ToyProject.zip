@@ -14,30 +14,36 @@ public class WiseSayingController {
     }
 
     public void start() {
-
-        System.out.println("== 명언 앱 ==");
+        System.out.println("== Wise Saying App ==");
 
         while (true) {
-            System.out.print("명령) ");
-            String command = sc.nextLine();
+            System.out.print("Command) ");
+            String command = sc.nextLine().trim();
 
-            if (command.trim().equals("등록")) {
-                registerProverb();
-            } else if (command.trim().equals("목록")) {
-                listProverb();
-            } else if (command.trim().startsWith("검색")) {
-                searchProverb(command);
-            } else if (command.trim().startsWith("수정?id=")) {
-                updateProverb(command);
-            } else if (command.trim().startsWith("삭제?id=")) {
-                deleteProverb(command);
-            } else if (command.trim().equals("빌드")) {
-                buildDataProverb();
-            } else if (command.trim().equals("종료")) {
-                System.out.println("프로그램이 종료되었습니다.");
-                break;
-            } else {
-                System.out.println("잘못된 명령어 입니다.");
+            switch (command) {
+                case "register":
+                    registerProverb();
+                    break;
+                case "list":
+                    listProverb();
+                    break;
+                case "build":
+                    buildDataProverb();
+                    break;
+                case "exit":
+                    System.out.println("Program exited.");
+                    return;
+                default:
+                    if (command.startsWith("search")) {
+                        searchProverb(command);
+                    } else if (command.startsWith("update?id=")) {
+                        updateProverb(command);
+                    } else if (command.startsWith("delete?id=")) {
+                        deleteProverb(command);
+                    } else {
+                        System.out.println("Invalid command.");
+                    }
+                    break;
             }
         }
     }
