@@ -5,12 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import data.Proverb;
 import util.ExceptionHandler;
+import wiseSayingController.WiseSayingRepositoryInterface;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WiseSayingRepository {
+public class WiseSayingRepository implements WiseSayingRepositoryInterface {
     private static final String DB = "src/main/java/db/";
     private static final String LAST_ID_FILE = DB + "lastId.txt";
     private static final String DATA_PROVERB_FILE = DB + "data.json";
@@ -62,7 +63,7 @@ public class WiseSayingRepository {
 
     }
 
-    public List<Proverb> loadProverbs() throws FileNotFoundException {
+    public List<Proverb> loadProverbs() {
         File folder = new File(DB);
         List<Proverb> proverbs = new ArrayList<>();
 

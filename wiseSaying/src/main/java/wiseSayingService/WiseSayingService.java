@@ -1,6 +1,7 @@
 package wiseSayingService;
 
 import data.Proverb;
+import wiseSayingController.WiseSayingRepositoryInterface;
 import wiseSayingRepository.WiseSayingRepository;
 
 import java.io.FileNotFoundException;
@@ -9,17 +10,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class WiseSayingService {
-    private final WiseSayingRepository repository;
+    private final WiseSayingRepositoryInterface repository;
     private final List<Proverb> proverbList; // 데이터 영속성
     private static final int LIST_PER_PAGE = 5;
 
     public WiseSayingService() {
         this.repository = new WiseSayingRepository();
-        try {
-            this.proverbList = repository.loadProverbs(); // 데이터 영속성
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        this.proverbList = repository.loadProverbs(); // 데이터 영속성
     }
 
     // 테스트용 생성자 (Mock 주입 지원)
