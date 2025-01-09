@@ -69,7 +69,7 @@ public class WiseSayingRepository implements WiseSayingRepositoryInterface, Last
         File folder = new File(DB);
         List<Proverb> proverbs = new ArrayList<>();
 
-        File[] files = folder.listFiles(((dir, name) -> name.endsWith(".json")));
+        File[] files = folder.listFiles(((dir, name) -> name.endsWith(".json")&& !name.equals("data.json")));
         if (files != null) {
             Gson gson = new Gson();
 
