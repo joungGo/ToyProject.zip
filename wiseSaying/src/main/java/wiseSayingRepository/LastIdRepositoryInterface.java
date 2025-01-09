@@ -1,4 +1,4 @@
-package wiseSayingController;
+package wiseSayingRepository;
 
 public interface LastIdRepositoryInterface {
     int readLastId();

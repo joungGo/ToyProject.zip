@@ -5,8 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import data.Proverb;
 import util.ExceptionHandler;
-import wiseSayingController.LastIdRepositoryInterface;
-import wiseSayingController.WiseSayingRepositoryInterface;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,8 +1,6 @@
 package wiseSayingRepository;
 
 import data.Proverb;
-import wiseSayingController.LastIdRepositoryInterface;
-import wiseSayingController.WiseSayingRepositoryInterface;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package wiseSayingController;
+package wiseSayingRepository;
 
 import data.Proverb;
 

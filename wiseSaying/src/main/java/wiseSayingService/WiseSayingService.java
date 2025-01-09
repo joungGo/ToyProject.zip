@@ -1,8 +1,8 @@
 package wiseSayingService;
 
 import data.Proverb;
-import wiseSayingController.LastIdRepositoryInterface;
-import wiseSayingController.WiseSayingRepositoryInterface;
+import wiseSayingRepository.LastIdRepositoryInterface;
+import wiseSayingRepository.WiseSayingRepositoryInterface;
 import wiseSayingRepository.WiseSayingRepository;
 
 import java.util.ArrayList;
