@@ -83,7 +83,7 @@ public class SimpleDb {
             }
         }
     }
-    /*public Sql genSql() {
-        return null;
-    }*/
+    public Sql genSql() {
+        return new Sql();
+    }
 }
