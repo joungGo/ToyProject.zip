@@ -1,6 +1,5 @@
-package org.example.exercisespringboot.Repository;
+package org.example.exercisespringboot.question;
 
-import org.example.exercisespringboot.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

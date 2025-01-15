@@ -1,8 +1,9 @@
-package org.example.exercisespringboot;
+package org.example.exercisespringboot.question;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.exercisespringboot.answer.Answer;
 
 import java.time.LocalDateTime;
 import java.util.List;

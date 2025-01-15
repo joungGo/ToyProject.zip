@@ -1,7 +1,9 @@
-package org.example.exercisespringboot.Repository;
+package org.example.exercisespringboot;
 
-import org.example.exercisespringboot.Answer;
-import org.example.exercisespringboot.Question;
+import org.example.exercisespringboot.answer.Answer;
+import org.example.exercisespringboot.answer.AnswerRepository;
+import org.example.exercisespringboot.question.Question;
+import org.example.exercisespringboot.question.QuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,7 +93,7 @@ class ExerciseSpringBootApplicationTests {
 
         List<Answer> answerList = q.getAnswerList();
 
-        assertEquals(1, answerList.size());
+        assertEquals(4, answerList.size());
         assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 
         /*

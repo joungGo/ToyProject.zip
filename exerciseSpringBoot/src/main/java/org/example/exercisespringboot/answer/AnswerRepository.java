@@ -1,6 +1,5 @@
-package org.example.exercisespringboot.Repository;
+package org.example.exercisespringboot.answer;
 
-import org.example.exercisespringboot.Answer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnswerRepository extends JpaRepository<Answer, Integer> {
