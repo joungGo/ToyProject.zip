@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### exerciseSpringBoot ###
+exerciseSpringBoot/src/main/dbData/local.mv.db
+exerciseSpringBoot/src/main/dbData/local.trace.db
