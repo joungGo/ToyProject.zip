@@ -16,7 +16,7 @@ public class Question {
     // 자동 증가 // strategy 옵션을 생략한다면 @GeneratedValue 애너테이션이 지정된 모든 속성에 번호를 차례로 생성하므로 순서가 일정한 고유 번호를 가질 수 없게 된다.
     private Integer id;
 
-    @Column(length = 200) //  테이블의 열 이름과 일치하는데 열의 세부 설정 // 열의 길이를 200
+    @Column(length = 200) //  테이블의 열 이름과 일치하는데 열의 세부 설정 // 열의 길이를 200 = VARCHAR(200)
     private String subject;
 
     @Column(columnDefinition = "TEXT") // 열 데이터의 유형이나 성격을 정의 // TEXT 타입으로 지정
