@@ -28,6 +28,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.h2database:h2:2.2.224'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // 자바 코드를 삽입할 수 있는 HTML 형식의 파일
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools' // 서버를 재시작하지 않고 코드 변경을 즉시 반영(자동으로 서버 재시작)
