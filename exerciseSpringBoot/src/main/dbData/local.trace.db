@@ -1493,3 +1493,10 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/user/To
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 61 more
+2025-01-16 11:34:54.663959+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "select *\000d\000a[*]10from answer"; SQL statement:
+select *
+10from answer [42000-224]
+2025-01-16 11:35:14.207470+09:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "truncate [*]answer"; expected "TABLE"; SQL statement:
+truncate answer [42001-224]
