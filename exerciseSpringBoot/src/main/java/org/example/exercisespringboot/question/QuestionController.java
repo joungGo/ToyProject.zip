@@ -42,4 +42,9 @@ public class QuestionController {
         model.addAttribute("question", question); // id에 맞게 가져온 Question 객체를 모델에 담아서 템플릿으로 전달
         return "question_detail"; // view(템플릿) 를 반환
     }
+
+    @GetMapping("/create")
+    public String questionCreate() {
+        return "question_form";
+    }
 }
