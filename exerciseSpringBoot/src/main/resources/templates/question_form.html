@@ -2,9 +2,10 @@
 <div layout:fragment="content" class="container">
     <h5 class="my-3 border-bottom pb-2">질문등록</h5>
     <form th:action="@{/question/create}" th:object="${questionForm}" method="post">
-        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+        <!--<div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-        </div>
+        </div>-->
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div> <!--th:replace 속성에 의해 div 요소의 내용을 form_errors 템플릿으로 대체하라는 의미 = 공통의 에러 코드를 분리하여 사용-->
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
             <input type="text" th:field="*{subject}" class="form-control">

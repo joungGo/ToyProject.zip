@@ -2,9 +2,14 @@ package org.example.exercisespringboot.question;
 
 import lombok.RequiredArgsConstructor;
 import org.example.exercisespringboot.exception.DataNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +19,17 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public List<Question> getList() {
-        return this.questionRepository.findAll();
+    public Page<Question> getList(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        /*
+        위 두코드에 의해 sorts 리스트에는 '값'이 할당되는 것이 아닌, '정렬 조건'이 추가되는 것이다.
+        즉, sorts 리스트에는 '정렬 조건'이 추가되어 있을 뿐이며, 실제로 정렬이 이루어지는 것은 아니다.
+        'createDate 속성을 기준으로 내림차순 정렬' 이라는 조건 1개가 추가되었고 이 정렬 조건을 가지고 페이징을 하기 위해 매개변수로 아래의 코드에 사용된다.
+         */
+        //Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.questionRepository.findAll(pageable);
     }
 
     // 질문 상세 정보를 가져오는 기능

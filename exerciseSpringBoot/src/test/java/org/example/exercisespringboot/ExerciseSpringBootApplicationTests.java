@@ -4,6 +4,7 @@ import org.example.exercisespringboot.answer.Answer;
 import org.example.exercisespringboot.answer.AnswerRepository;
 import org.example.exercisespringboot.question.Question;
 import org.example.exercisespringboot.question.QuestionRepository;
+import org.example.exercisespringboot.question.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,9 @@ class ExerciseSpringBootApplicationTests {
 
     @Autowired
     private AnswerRepository answerRepository;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Test
     void testJpa1() {
@@ -105,5 +109,14 @@ class ExerciseSpringBootApplicationTests {
         왜냐하면 QuestionRepository 가 findById 메서드를 통해 Question 객체를 조회하고 나면 DB 세션이 끊어지기 때문이다.
         DB 세션이란 스프링 부트 애플리케이션과 데이터베이스 간의 연결을 뜻한다.
          */
+    }
+
+    @Test
+    void testJpa7() {
+        for (int i = 1; i <= 300; i++) {
+            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+            String content = "내용무";
+            this.questionService.create(subject, content);
+        }
     }
 }
