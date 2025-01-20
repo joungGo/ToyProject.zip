@@ -3,11 +3,18 @@ package org.example.exercisespringboot.question;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.exercisespringboot.answer.AnswerForm;
+import org.example.exercisespringboot.user.SiteUser;
+import org.example.exercisespringboot.user.UserService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.security.Principal;
 
 @RequiredArgsConstructor // final 또는 @NotNull 이 붙은 필드를 생성자로 만들어줌
 /*
@@ -24,6 +31,7 @@ public class QuestionController {
 
     // TODO : QuestionController 가 QuestionService 를 통해 QuestionRepository 를 사용하도록 수정
     private final QuestionService questionService;
+    private final UserService userService;
 
     // 질문 목록을 보여주는 페이지로 이동
     @GetMapping("/list")
@@ -35,7 +43,7 @@ public class QuestionController {
 
         // model.addAttribute("questionList", questionList);
         model.addAttribute("paging", paging);
-        return "quesPathtion_list";
+        return "question_list";
     }
 
     // 질문 상세 페이지로 이동
@@ -48,12 +56,14 @@ public class QuestionController {
     }
 
     // 질문 등록 페이지로 이동
+    @PreAuthorize("isAuthenticated()") // 해당 메서드는 로그인한 사용자만 호출할 수 있다.
     @GetMapping("/create")
     public String questionCreate(QuestionForm questionForm) { // 매개변수로 바인딩 된 것은 Model 에 전달하지 않아도 사용이 가능하다.
         return "question_form";
     }
 
     // 질문을 등록하는 기능
+    @PreAuthorize("isAuthenticated()") // 해당 메서드는 로그인한 사용자만 호출할 수 있다.
     @PostMapping("/create")
     /*public String questionCreate(@RequestParam(value="subject") String subject, @RequestParam(value="content") String content) {
         this.questionService.create(subject, content);
@@ -61,11 +71,13 @@ public class QuestionController {
     }*/
 
     // @Valid : 폼 클래스에 설정한 검증 규칙을 적용
-    public String questionCreate(@Valid @ModelAttribute("questionForm") QuestionForm questionForm, BindingResult bindingResult) {
+    public String questionCreate(@Valid @ModelAttribute("questionForm") QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
         return "redirect:/question/list";
     }
     /*
@@ -74,4 +86,44 @@ public class QuestionController {
     그리고 이어지는 BindingResult 매개변수는 @Valid 애너테이션으로 검증이 수행된 결과를 의미하는 객체
      */
 
+    // 질문 - 수정하기 - 수정하기 전 필요 정보 조회
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal) {
+        Question question = this.questionService.getQuestion(id);
+        if(!question.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        questionForm.setSubject(question.getSubject());
+        questionForm.setContent(question.getContent());
+        return "question_form";
+    }
+
+    // 질문 - 수정하기 - 저장
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String questionModify(@Valid QuestionForm questionForm, BindingResult bindingResult,
+                                 Principal principal, @PathVariable("id") Integer id) {
+        if (bindingResult.hasErrors()) {
+            return "question_form";
+        }
+        Question question = this.questionService.getQuestion(id);
+        if (!question.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
+        return String.format("redirect:/question/detail/%s", id);
+    }
+
+    // 질문 삭제
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        if (!question.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        this.questionService.delete(question);
+        return "redirect:/";
+    }
 }

@@ -111,4 +111,10 @@ public class MyService {
 ---
 
 # 파일 설명
-- layout.html : html 을 표준형식으로 구현 및 변환하는 과정 중 중복되는 부분을 layout.html로 분리하여 사용
+- layout.html : html 을 표준형식으로 구현 및 변환하는 과정 중 중복되는 부분을 layout.html 로 분리하여 사용
+
+# 개선점
+1.  AnswerService 의 create 메서드, QuestionService 의 create 메서드, UserService 의 create 메서드를 빌더 패턴으로 수정
+    @Setter 대신 빌더 패턴 사용을 권장
+2. Id, 날짜는 사용자가 수정할 필요 없다. @CreatedDate, @LastModifiedDate, @AccessLevel.PRIVATE 사용하여 수정
+3. 

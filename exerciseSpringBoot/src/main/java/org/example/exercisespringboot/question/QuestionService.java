@@ -2,6 +2,7 @@ package org.example.exercisespringboot.question;
 
 import lombok.RequiredArgsConstructor;
 import org.example.exercisespringboot.exception.DataNotFoundException;
+import org.example.exercisespringboot.user.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,11 +44,25 @@ public class QuestionService {
     }
 
     // 질문을 저장하는 기능
-    public void create(String subject, String content) {
+    public void create(String subject, String content, SiteUser user) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
+        q.setAuthor(user);
         this.questionRepository.save(q);
+    }
+
+    // 질문 수정 기능
+    public void modify(Question question, String subject, String content) {
+        question.setSubject(subject);
+        question.setContent(content);
+        question.setModifyDate(LocalDateTime.now());
+        this.questionRepository.save(question);
+    }
+
+    // 질문 삭제 기능
+    public void delete(Question question) {
+        this.questionRepository.delete(question);
     }
 }
