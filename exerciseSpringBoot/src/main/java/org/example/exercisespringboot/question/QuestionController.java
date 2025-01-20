@@ -35,7 +35,7 @@ public class QuestionController {
 
         // model.addAttribute("questionList", questionList);
         model.addAttribute("paging", paging);
-        return "question_list";
+        return "quesPathtion_list";
     }
 
     // 질문 상세 페이지로 이동

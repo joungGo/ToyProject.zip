@@ -28,7 +28,7 @@ public class AnswerController {
     }*/
 
     public String createAnswer(Model model, @PathVariable("id") Integer id,
-                               @Valid AnswerForm answerForm, BindingResult bindingResult) {
+                               @Valid AnswerForm answerForm, BindingResult bindingResult) { // BindingResult : 유효성 검사 결과를 담는 객체, @Valid 로 검사하고 결과를 BindingResult 에 담아줌
         Question question = this.questionService.getQuestion(id);
         if (bindingResult.hasErrors()) {
             model.addAttribute("question", question);
