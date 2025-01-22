@@ -26,7 +26,7 @@ public class Answer {
     private LocalDateTime modifyDate;
 
     @ManyToOne // @ManyToOne 은 부모(Question) 자식(Answer) 관계를 갖는 구조에서 사용
-    private Question question;
+    private Question question; // JPA 가 내부적으로 Question 엔티티의 PK를 참조하는 외래키를 생성
     /*
     답변을 통해 질문의 제목을 알고 싶다면 answer.getQuestion().getSubject()를 사용해 접근
      */

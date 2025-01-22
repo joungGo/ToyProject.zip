@@ -16,6 +16,7 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
 
 
+    // 답변 - 등록
     public void create(Question question, String content, SiteUser author) {
         Answer answer = new Answer();
         answer.setContent(content);
@@ -25,6 +26,7 @@ public class AnswerService {
         this.answerRepository.save(answer);
     }
 
+    // 답변 - 조회
     public Answer getAnswer(Integer id) {
         Optional<Answer> answer = this.answerRepository.findById(id);
         if (answer.isPresent()) {
