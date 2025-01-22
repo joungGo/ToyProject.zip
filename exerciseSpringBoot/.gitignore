@@ -39,3 +39,4 @@ out/
 ### exerciseSpringBoot ###
 exerciseSpringBoot/src/main/dbData/local.mv.db
 exerciseSpringBoot/src/main/dbData/local.trace.db
+exerciseSpringBoot/src/main/dbData/test.mv.db

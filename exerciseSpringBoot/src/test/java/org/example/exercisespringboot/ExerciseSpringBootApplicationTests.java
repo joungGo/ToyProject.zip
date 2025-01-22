@@ -8,6 +8,7 @@ import org.example.exercisespringboot.question.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest // ExerciseSpringBootApplicationTests 클래스가 스프링부트 테스트 클래스임을 명시
+@ActiveProfiles("test")
 class ExerciseSpringBootApplicationTests {
 
     @Autowired
@@ -113,9 +115,9 @@ class ExerciseSpringBootApplicationTests {
 
     @Test
     void testJpa7() {
-        for (int i = 1; i <= 300; i++) {
+        for (int i = 401; i <= 450; i++) {
             String subject = String.format("테스트 데이터입니다:[%03d]", i);
-            String content = "내용무";
+            String content = "내용무+";
             this.questionService.create(subject, content, null);
         }
     }
