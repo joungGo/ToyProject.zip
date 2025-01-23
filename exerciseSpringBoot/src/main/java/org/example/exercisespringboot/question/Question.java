@@ -33,7 +33,9 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE/*, orphanRemoval = true*/)
     private List<Answer> answerList; // JPA 는 엔티티 간의 관계를 정의하고 관리할 때, 연관된 엔티티의 데이터는 참조 관계로 처리되며, 실제로 해당 필드(answerList)는 테이블에 컬럼으로 직접 생성되지 않습니다.
     /*
+
     질문에서 답변을 참조하려면 question.getAnswerList()를 호출
+
     @OneToMany 애너테이션에 사용된 mappedBy는 참조 엔티티의 속성명을 정의한다.
     즉, Answer 엔티티에서 Question 엔티티를 참조한 속성인 question 을 mappedBy에 전달해야 한다.
 

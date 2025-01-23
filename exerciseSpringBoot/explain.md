@@ -242,6 +242,8 @@ public class Comment {
 @ManyToOne() : 단방향 객체 탐색, 관계를 맺으려면 필수 선언, 외래키, 기본 fetch 전략은 EAGER
 
 4. @ManyToOne, @OneToMany 의 fetch 속성을 LAZY 로 설정하기
+5. (N+1) 문제 발생 가능성 존재
+
 
 ---
 

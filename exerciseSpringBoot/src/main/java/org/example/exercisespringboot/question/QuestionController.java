@@ -40,7 +40,6 @@ public class QuestionController {
                                       // 키-값 쌍으로 데이터를 저장 :: key 는 템플릿에서 사용되는 변수 이름이고, "value"는 템플릿에서 렌더링될 데이터
         //List<Question> questionList = this.questionRepository.findAll();
         Page<Question> paging = this.questionService.getList(page);
-
         // model.addAttribute("questionList", questionList);
         model.addAttribute("paging", paging);
         return "question_list";

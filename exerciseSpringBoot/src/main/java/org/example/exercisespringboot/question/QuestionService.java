@@ -20,6 +20,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
+    // 질문 목록을 가져오는 기능 - 페이징
     public Page<Question> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
