@@ -11,6 +11,7 @@ public class QuestionForm { // 폼 클래스는 입력값 검증할 때뿐만 �
     @NotEmpty(message = "제목은 필수항목입니다.")
     // @NotEmpty : null 이나 empty 문자열이 아닌 경우에만 통과
     @Size(max = 200)
+    //@Length(min = 2, message = "제목은 2자 이상 입력해주세요.")
     private String subject;
 
     @NotEmpty(message = "내용은 필수항목입니다.")

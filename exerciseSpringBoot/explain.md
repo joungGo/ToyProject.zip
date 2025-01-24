@@ -243,7 +243,7 @@ public class Comment {
 
 4. @ManyToOne, @OneToMany 의 fetch 속성을 LAZY 로 설정하기
 5. (N+1) 문제 발생 가능성 존재
-
+6. HTTP 메서드 사용해서 API 구현하기(컨트롤러 수정)
 
 ---
 
