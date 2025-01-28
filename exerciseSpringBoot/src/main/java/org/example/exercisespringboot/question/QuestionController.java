@@ -29,7 +29,7 @@ public class QuestionController {
 
     //private final QuestionRepository questionRepository;
 
-    // TODO : QuestionController 가 QuestionService 를 통해 QuestionRepository 를 사용하도록 수정
+    // QuestionController 가 QuestionService 를 통해 QuestionRepository 를 사용하도록 수정
     private final QuestionService questionService;
     private final UserService userService;
 
