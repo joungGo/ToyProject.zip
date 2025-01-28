@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public SiteUser getUser(String username) {
-        Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
+        Optional<SiteUser> siteUser = this.userRepository.findByUsername(username); // 현재 로그인한 사용자의 이름을 기준으로 사용자 정보를 가져온다.
         if (siteUser.isPresent()) {
             return siteUser.get();
         } else {
