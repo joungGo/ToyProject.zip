@@ -2,12 +2,14 @@ package org.example.bulletinboardrestapi.domain.question.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.bulletinboardrestapi.domain.answer.entity.Answer;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,4 +34,7 @@ public class Question {
 
     @Column(length = 200)
     private String subject;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<Answer> answerList;
 }
