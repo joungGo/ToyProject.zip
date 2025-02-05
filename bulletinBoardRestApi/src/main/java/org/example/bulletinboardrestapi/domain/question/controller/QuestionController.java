@@ -51,7 +51,7 @@ public class QuestionController {
     }
 
     // 질문 등록
-    @PostMapping
+    @PostMapping("/create")
     public RsData<QuestionDto> create(@RequestBody @Valid QuestionForm questionForm) {
 
         // DB에 질문 등록

@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 @Getter
 public class AnswerDto {
     private Integer id;
+    @JsonProperty("질문")
     private String subject; // 질문의 제목
+    @JsonProperty("답변")
     private String content; // 답변의 내용
     @JsonProperty("작성일")
     private LocalDateTime createDate;
