@@ -8,10 +8,12 @@ import org.example.bulletinboardrestapi.domain.question.entity.Question;
 import org.example.bulletinboardrestapi.domain.question.service.QuestionService;
 import org.example.bulletinboardrestapi.global.dto.RsData;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,9 +21,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionController {
     private final QuestionService questionService;
 
-    // TODO : 질문 목록(전체) 조회
+    // 질문 목록(전체) 조회
+    @GetMapping
+    public RsData<List<QuestionDto>> getItems() {
+        List<Question> questions = questionService.getAllItems();
+        List<QuestionDto> questionDtos = questions
+                .stream()
+                .map(QuestionDto::new)
+                .toList();
 
-    // TODO : 질문(단건) 조회
+        return new RsData<>(
+                "200-1",
+                "질문 목록(전체) 조회가 완료되었습니다.",
+                questionDtos
+        );
+    }
+
+    // 질문(단건) 조회
+    @GetMapping("/{id}")
+    public RsData<QuestionDto> getItem(@PathVariable Integer id) {
+        //Question question = questionService.getItem(id).orElse(null); // NullPointerException 방지 목적
+        Question question = questionService.getItem(id).get(); // NoSuchElementException 방지 목적
+
+        return new RsData<>(
+                "200-1",
+                "질문 조회가 완료되었습니다.",
+                new QuestionDto(question)
+        );
+    }
 
     // 질문 등록
     @PostMapping
@@ -37,8 +64,29 @@ public class QuestionController {
         );
     }
 
-    // TODO : 질문 수정
+    // 질문 수정
+    @PutMapping("/{id}")
+    public RsData<Void> modify(@PathVariable Integer id, @RequestBody @Valid QuestionForm questionForm) {
+        Question question = questionService.getItem(id).get();
+        questionService.modifyItem(question, questionForm.getContent(), questionForm.getSubject());
+        return new RsData<>(
+                "200-1",
+                "%d번 글 질문이 완료되었습니다.".formatted(id),
+                null
+        );
+    }
 
-    // TODO : 질문 삭제
+    // 질문 삭제
+    @DeleteMapping("/{id}")
+    public RsData<Void> delete(@PathVariable Integer id) {
+        Question question = questionService.getItem(id).get();
+        questionService.deleteItem(question);
+
+        return new RsData<>(
+                "200-1",
+                "%d번 질문이 삭제되었습니다.".formatted(id),
+                null
+        );
+    }
 
 }
