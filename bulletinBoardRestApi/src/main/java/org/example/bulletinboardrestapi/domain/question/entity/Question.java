@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-//@JsonIgnoreProperties("answerList")
+//@JsonIgnoreProperties("{answerList}")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

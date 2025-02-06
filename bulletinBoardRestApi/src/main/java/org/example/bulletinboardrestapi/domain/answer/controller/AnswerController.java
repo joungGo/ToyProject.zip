@@ -22,19 +22,19 @@ public class AnswerController {
     private final AnswerService answerService;
     private final QuestionService questionService;
 
-    // TODO : 답변(단건) 조회
-    /*@GetMapping("/{id}")
-    public RsData<QuestionDto> getItem(@PathVariable Integer id) {
-        Question question = answerService.getItem(id).get(); // NoSuchElementException 방지 목적
+    // 답변(단건) 조회
+    @GetMapping("/{id}")
+    public RsData<AnswerDto> getItem(@PathVariable Integer id) {
+        Answer answer = answerService.getItem(id).get(); // NoSuchElementException 방지 목적
 
         return new RsData<>(
                 "200-1",
                 "답변 조회가 완료되었습니다.",
-                new QuestionDto(question)
+                new AnswerDto(answer)
         );
-    }*/
+    }
 
-    // TODO : 답변 등록
+    // 답변 등록
     @PostMapping("/create/{id}")
     public RsData<AnswerDto> create(@PathVariable Integer id, @RequestBody @Valid AnswerForm answerFrom) {
 
@@ -48,29 +48,29 @@ public class AnswerController {
         );
     }
 
-    // TODO : 답변 수정
-    /*@PutMapping("/{id}")
-    public RsData<Void> modify(@PathVariable Integer id, @RequestBody @Valid QuestionForm questionForm) {
-        Question question = answerService.getItem(id).get();
-        answerService.modifyItem(question, questionForm.getContent(), questionForm.getSubject());
+    // 답변 수정
+    @PutMapping("/{id}")
+    public RsData<Void> modify(@PathVariable Integer id, @RequestBody @Valid AnswerForm answerForm) {
+        Answer answer = answerService.getItem(id).get();
+        answerService.modifyItem(answer, answerForm.getContent());
         return new RsData<>(
                 "200-1",
                 "%d번 글 답변이 완료되었습니다.".formatted(id),
                 null
         );
-    }*/
+    }
 
-    // TODO : 답변 삭제
-    /*@DeleteMapping("/{id}")
+    // 답변 삭제
+    @DeleteMapping("/{id}")
     public RsData<Void> delete(@PathVariable Integer id) {
-        Question question = answerService.getItem(id).get();
-        answerService.deleteItem(question);
+        Answer answer = answerService.getItem(id).get();
+        answerService.deleteItem(answer);
 
         return new RsData<>(
                 "200-1",
                 "%d번 답변이 삭제되었습니다.".formatted(id),
                 null
         );
-    }*/
+    }
 
 }
