@@ -1,5 +1,7 @@
 package org.example.bulletinboardrestapi.domain.question.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.bulletinboardrestapi.domain.answer.entity.Answer;
@@ -18,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+//@JsonIgnoreProperties("answerList")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

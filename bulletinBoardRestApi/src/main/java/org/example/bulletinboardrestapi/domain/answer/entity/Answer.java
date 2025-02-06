@@ -1,5 +1,6 @@
 package org.example.bulletinboardrestapi.domain.answer.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,7 @@ public class Answer {
     private LocalDateTime modifyDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("answerList")
+    @JsonIgnore
+    //@JsonIgnoreProperties("answerList")
     private Question question;
 }

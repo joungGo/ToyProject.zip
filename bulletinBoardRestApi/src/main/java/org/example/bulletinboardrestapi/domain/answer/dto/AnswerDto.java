@@ -24,6 +24,7 @@ public class AnswerDto {
     public AnswerDto(Answer answer) {
         this.id = answer.getId();
         this.subject = answer.getQuestion().getSubject();
+        //this.subject = answer.getQuestion() != null ? answer.getQuestion().getSubject() : null; // 안전한 참조
         this.content = answer.getContent();
         this.createDate = answer.getCreateDate();
         this.modifyDate = answer.getModifyDate();

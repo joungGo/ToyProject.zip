@@ -30,7 +30,7 @@ public class QuestionDto {
         this.createDate = question.getCreateDate();
         this.modifyDate = question.getModifyDate();
         this.answerList = question.getAnswerList();
-        // 자세한 내용은 introduce.md 에 여러 해결 방법을 기재!
+        // 자세한 내용은 HELP.md 에 여러 해결 방법을 기재!
         /*this.answerList = question.getAnswerList()
                 .stream()
                 .map(AnswerDto::new)
