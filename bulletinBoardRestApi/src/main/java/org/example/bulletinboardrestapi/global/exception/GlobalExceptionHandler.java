@@ -15,7 +15,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-@RestControllerAdvice
+@RestControllerAdvice // @ControllerAdvice + @ResponseBody : 모든 컨트롤러에 적용되는 예외처리
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({NoSuchElementException.class, NoResourceFoundException.class})
