@@ -7,13 +7,9 @@ import org.example.bulletinboardrestapi.domain.question.dto.QuestionForm;
 import org.example.bulletinboardrestapi.domain.question.entity.Question;
 import org.example.bulletinboardrestapi.domain.question.service.QuestionService;
 import org.example.bulletinboardrestapi.global.dto.RsData;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
