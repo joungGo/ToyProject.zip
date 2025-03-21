@@ -67,4 +67,25 @@ class WiseSayingRepository {
             ExceptionHandler.handleIOException(e, "lastId.txt  파일 쓰기 중 오류 발생")
         }
     }
+
+    fun saveDataToFile(proverbList: MutableList<Proverb>) {
+        val gson: Gson = Gson()
+        try {
+            BufferedWriter(FileWriter(DATA_PROVERB_FILE)).use { bw ->
+                gson.toJson(proverbList, bw)
+                println("빌드 성공")
+            }
+        } catch (e: IOException) {
+            ExceptionHandler.handleIOException(e, "data.json 파일 쓰기 중 오류 발생")
+        }
+    }
+
+    fun deleteProverbFile(id: Int) {
+        val file = File("$DB$id.json")
+        when {
+            !file.exists() -> println("$id.json 파일이 존재하지 않습니다.")
+            file.delete() -> println("$id.json 파일이 성공적으로 삭제되었습니다.")
+            else -> println("$id.json 파일 삭제에 실패하였습니다.")
+        }
+    }
 }
