@@ -1,10 +1,11 @@
 package controller
 
+import global.SingletonScope
 import service.WiseSayingService
 
 class WiseSayingController {
 
-    private val service: WiseSayingService = WiseSayingService()
+    private val service: WiseSayingService = SingletonScope.wiseSayingService
 
     fun start() {
         println("== Wise Saying App ==")

@@ -1,12 +1,12 @@
 package service
 
+import global.SingletonScope
 import proverb.Proverb
-import repository.WiseSayingRepository
 import kotlin.math.ceil
 import kotlin.math.min
 
 class WiseSayingService {
-    private val repository = WiseSayingRepository()
+    private val repository = SingletonScope.wiseSayingRepository
     private val proverbList: MutableList<Proverb> = mutableListOf()
 
     companion object {

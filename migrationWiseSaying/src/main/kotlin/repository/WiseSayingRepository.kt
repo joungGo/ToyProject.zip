@@ -2,7 +2,7 @@ package repository
 
 import com.google.gson.Gson
 import proverb.Proverb
-import util.ExceptionHandler
+import global.util.ExceptionHandler
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.File
@@ -14,7 +14,7 @@ class WiseSayingRepository {
 
     // static
     companion object {
-        private val DB = "src/main/kotlin/db"
+        private val DB = "src/main/kotlin/db/"
         private val LAST_ID_FILE = DB + "lastId.txt"
         private val DATA_PROVERB_FILE = DB + "data.json"
     }
